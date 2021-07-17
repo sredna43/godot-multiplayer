@@ -10,11 +10,29 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "KinematicBody2D",
+"class": "Entity",
+"language": "GDScript",
+"path": "res://scenes/entities/Entity.gd"
+}, {
+"base": "Node2D",
+"class": "EntityFSM",
+"language": "GDScript",
+"path": "res://utils/state_machines/entity_fsm/StateMachine.gd"
+}, {
+"base": "Node2D",
+"class": "EntityState",
+"language": "GDScript",
+"path": "res://utils/state_machines/entity_fsm/State.gd"
+}, {
+"base": "Entity",
 "class": "Player",
 "language": "GDScript",
 "path": "res://scenes/entities/player/Player.gd"
 } ]
 _global_script_class_icons={
+"Entity": "",
+"EntityFSM": "",
+"EntityState": "",
 "Player": ""
 }
 
@@ -24,12 +42,16 @@ config/name="MultiPlayer Platformer"
 run/main_scene="res://utils/SceneHandler.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Constants="*res://utils/Constants.gd"
+
 [display]
 
 window/size/width=768
 window/size/height=512
-window/size/test_width=1536
-window/size/test_height=1024
+window/size/test_width=1350
+window/size/test_height=900
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
