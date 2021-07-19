@@ -3,6 +3,9 @@ class_name Player
 
 var h_input: float = 0
 onready var jump_power = Constants.PLAYER_JUMP_POWER
+onready var air_resistance = Constants.PLAYER_AIR_RESISTANCE
+onready var air_accel = Constants.PLAYER_AIR_ACCELERATION
+onready var jump_cancel = Constants.PLAYER_JUMP_CANCEL
 
 onready var l_floor_feeler = $Feelers/LFloorFeeler
 onready var r_floor_feeler = $Feelers/RFloorFeeler

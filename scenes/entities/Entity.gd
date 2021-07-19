@@ -8,7 +8,7 @@ var state_machine: EntityFSM setget _set_state_machine
 var animation_player: AnimationPlayer setget _set_animation_player
 onready var gravity: int = Constants.GRAVITY
 var velocity: Vector2 = Vector2()
-var speed: int setget _set_speed
+onready var speed: int setget _set_speed
 
 func _set_state_machine(sm: EntityFSM) -> void:
 	state_machine = sm
@@ -20,7 +20,7 @@ func _set_speed(sp: int) -> void:
 	speed = sp
 
 func apply_gravity() -> void:
-	velocity.y += gravity
+	velocity.y = clamp(velocity.y + gravity, -Constants.TERMINAL_VELOCITY, Constants.TERMINAL_VELOCITY)
 
 func move() -> void:
 	velocity = move_and_slide(velocity, Vector2.UP)
