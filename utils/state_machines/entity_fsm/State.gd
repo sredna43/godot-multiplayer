@@ -12,7 +12,6 @@ func _ready() -> void:
 func enter(entity: KinematicBody2D) -> void:
 	entity.animation_player.playback_speed = 1
 	entity.animation_player.play(tag)
-	print(tag)
 	
 # Returns the next state to enter
 func run(_entity: KinematicBody2D) -> String:

@@ -12,6 +12,8 @@ onready var r_floor_feeler = $Feelers/RFloorFeeler
 onready var jump_timer = $Timers/JumpTimer
 var jumping: bool = false setget , _get_jumping
 
+var player_state: Dictionary = {}
+
 func _get_jumping() -> bool:
 	return not jump_timer.is_stopped()
 
@@ -29,7 +31,11 @@ func _handle_inputs() -> void:
 func on_floor() -> bool:
 	return is_on_floor() or l_floor_feeler.is_colliding() or r_floor_feeler.is_colliding()
 	
+func define_player_state() -> void:
+	player_state = {"T": OS.get_system_time_msecs(), "P": get_global_position()}
+	Server.send_player_state(player_state)
+	
 func _physics_process(delta) -> void:
 	_handle_inputs()
 	._physics_process(delta)
-
+	define_player_state()
