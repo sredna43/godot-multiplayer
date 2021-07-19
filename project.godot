@@ -45,7 +45,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Constants="*res://utils/Constants.gd"
-Server="*res://utils/Server.gd"
+DedicatedServer="*res://utils/DedicatedServer.gd"
 
 [display]
 

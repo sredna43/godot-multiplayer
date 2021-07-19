@@ -5,6 +5,9 @@ var ip = "127.0.0.1"
 var port = 1998
 var connected = false
 
+func _ready():
+	connect_to_server()
+
 func connect_to_server():
 	var _create_client_error = network.create_client(ip, port)
 	get_tree().set_network_peer(network)
@@ -18,9 +21,6 @@ func _on_connection_succeeded():
 	
 func _on_connection_failed():
 	print("Failed to connect to server " + str(ip) + ":" + str(port))
-
-func _ready():
-	connect_to_server()
 
 func send_player_state(player_state):
 	if connected:

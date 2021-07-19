@@ -33,7 +33,7 @@ func on_floor() -> bool:
 	
 func define_player_state() -> void:
 	player_state = {"T": OS.get_system_time_msecs(), "P": get_global_position()}
-	Server.send_player_state(player_state)
+	DedicatedServer.send_player_state(player_state)
 	
 func _physics_process(delta) -> void:
 	_handle_inputs()
