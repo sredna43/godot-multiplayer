@@ -4,14 +4,28 @@ class_name Entity
 onready var Constants: Node = get_node("/root/Constants")
 
 var previous_states: Array = []
-var state_machine: EntityFSM
-var animation_player: AnimationPlayer
-
+var state_machine: EntityFSM setget _set_state_machine
+var animation_player: AnimationPlayer setget _set_animation_player
 onready var gravity: int = Constants.GRAVITY
-var speed: int
+var velocity: Vector2 = Vector2()
+var speed: int setget _set_speed
 
-func set_state_machine(sm: EntityFSM) -> void:
+func _set_state_machine(sm: EntityFSM) -> void:
 	state_machine = sm
 
-func set_animation_player(ap: AnimationPlayer) -> void:
+func _set_animation_player(ap: AnimationPlayer) -> void:
 	animation_player = ap
+	
+func _set_speed(sp: int) -> void:
+	speed = sp
+
+func apply_gravity() -> void:
+	velocity.y += gravity
+
+func move() -> void:
+	velocity = move_and_slide(velocity, Vector2.UP)
+
+func _physics_process(_delta) -> void:
+	move()
+	apply_gravity()
+	state_machine.run()

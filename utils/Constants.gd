@@ -1,4 +1,5 @@
 extends Node
 
-var GRAVITY: int = 300
-var PLAYER_SPEED: int = 500
+var GRAVITY: int = 10
+var PLAYER_SPEED: int = 200
+var PLAYER_JUMP_POWER: int = -300
