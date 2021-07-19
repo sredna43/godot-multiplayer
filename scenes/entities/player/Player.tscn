@@ -19,11 +19,11 @@ resource_name = "jump"
 [sub_resource type="Animation" id=4]
 resource_name = "walk"
 
-[sub_resource type="CapsuleShape2D" id=5]
-radius = 15.9734
-height = 16.1735
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 15.9608, 22.9678 )
 
 [node name="Player" type="KinematicBody2D"]
+collision_mask = 2
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -39,6 +39,7 @@ anims/jump = SubResource( 3 )
 anims/walk = SubResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 1 )
 shape = SubResource( 5 )
 
 [node name="States" type="Node2D" parent="."]
@@ -66,18 +67,18 @@ one_shot = true
 [node name="Feelers" type="Node2D" parent="."]
 
 [node name="LFloorFeeler" type="RayCast2D" parent="Feelers"]
-position = Vector2( -12, 20 )
+position = Vector2( -12, 24.5 )
 enabled = true
-cast_to = Vector2( 0, 5 )
+cast_to = Vector2( 0, 1 )
 collide_with_areas = true
 __meta__ = {
 "_editor_description_": ""
 }
 
 [node name="RFloorFeeler" type="RayCast2D" parent="Feelers"]
-position = Vector2( 12, 20 )
+position = Vector2( 12, 24.5 )
 enabled = true
-cast_to = Vector2( 0, 5 )
+cast_to = Vector2( 0, 1 )
 collide_with_areas = true
 __meta__ = {
 "_editor_description_": ""

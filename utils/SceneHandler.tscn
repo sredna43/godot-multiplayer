@@ -1,7 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://scenes/levels/TestLevel_1.tscn" type="PackedScene" id=2]
+[ext_resource path="res://utils/SceneHandler.gd" type="Script" id=1]
 
 [node name="SceneHandler" type="Node"]
-
-[node name="Level1" parent="." instance=ExtResource( 2 )]
+script = ExtResource( 1 )

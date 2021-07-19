@@ -4,7 +4,7 @@ func enter(player: KinematicBody2D) -> void:
 	.enter(player)
 
 func run(player: KinematicBody2D) -> String:
-	if player.is_on_floor():
+	if player.on_floor():
 		return "idle"
 	if player.h_input:
 		player.velocity.x = clamp(player.velocity.x + player.air_accel * player.h_input, -player.speed, player.speed)

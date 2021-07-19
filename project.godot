@@ -38,13 +38,14 @@ _global_script_class_icons={
 
 [application]
 
-config/name="MultiPlayer Platformer"
+config/name="MultiPlayer Platformer Client"
 run/main_scene="res://utils/SceneHandler.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 Constants="*res://utils/Constants.gd"
+Server="*res://utils/Server.gd"
 
 [display]
 
