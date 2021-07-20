@@ -75,6 +75,15 @@ jump={
  ]
 }
 
+[layer_names]
+
+2d_render/layer_1="player"
+2d_physics/layer_1="player"
+2d_render/layer_2="player_template"
+2d_physics/layer_2="player_template"
+2d_render/layer_3="world"
+2d_physics/layer_3="world"
+
 [physics]
 
 common/enable_pause_aware_picking=true
