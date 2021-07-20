@@ -1,8 +1,6 @@
 extends KinematicBody2D
 class_name Entity
 
-onready var Constants: Node = get_node("/root/Constants")
-
 var previous_states: Array = []
 var state_machine: EntityFSM setget _set_state_machine
 var animation_player: AnimationPlayer setget _set_animation_player
