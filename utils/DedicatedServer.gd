@@ -1,8 +1,8 @@
 extends Node
 
 var network = NetworkedMultiplayerENet.new()
-var ip = "10.0.0.18"
-var port = 25565
+var ip = ""
+var port = 0
 var connected = false
 var latency = 0.0
 var client_clock = 0
