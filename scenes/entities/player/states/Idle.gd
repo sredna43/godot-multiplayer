@@ -11,5 +11,5 @@ func run(player: KinematicBody2D) -> String:
 		return "air"
 	if player.jumping:
 		return "jump"
-	player.velocity.x = 0
+	player.velocity.x = lerp(player.velocity.x, 0, player.friction)
 	return ""

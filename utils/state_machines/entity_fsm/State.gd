@@ -10,6 +10,7 @@ func _ready() -> void:
 		tag = name.to_lower()
 	
 func enter(entity: KinematicBody2D) -> void:
+	#print(tag)
 	entity.animation_player.playback_speed = 1
 	entity.animation_player.play(tag)
 	

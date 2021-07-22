@@ -1,8 +1,8 @@
 extends Node
 
 var network = NetworkedMultiplayerENet.new()
-var ip = ""
-var port = 0
+var ip = Constants.ip
+var port
 var connected = false
 var latency = 0.0
 var client_clock = 0
@@ -10,8 +10,7 @@ var latency_array = []
 var delta_latency = 0
 var decimal_collector: float = 0
 
-func _ready():
-	connect_to_server()
+signal connected_to_server
 	
 func _physics_process(delta):
 	client_clock += int(delta * 1000) + delta_latency
@@ -21,7 +20,8 @@ func _physics_process(delta):
 		client_clock += 1
 		decimal_collector -= 1.00
 
-func connect_to_server():
+func connect_to_server(server_port = 25565):
+	port = server_port
 	var _create_client_error = network.create_client(ip, port)
 	get_tree().set_network_peer(network)
 	var _connection_succes_signal_status = network.connect("connection_succeeded", self, "_on_connection_succeeded")
@@ -31,6 +31,7 @@ func _on_connection_succeeded():
 	print("Connected to server " + str(ip) + ":" + str(port))
 	rpc_id(1, "fetch_server_time", OS.get_system_time_msecs())
 	connected = true
+	emit_signal("connected_to_server")
 	var timer = Timer.new()
 	timer.wait_time = 0.5
 	timer.autostart = true

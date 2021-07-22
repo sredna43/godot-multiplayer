@@ -16,7 +16,6 @@ func init_states() -> void:
 func init(ent: KinematicBody2D) -> void:
 	entity = ent
 	init_states()
-	print(states)
 	active_state = states.idle
 	active_state.enter(entity)
 	
