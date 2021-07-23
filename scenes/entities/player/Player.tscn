@@ -19,11 +19,12 @@ resource_name = "jump"
 [sub_resource type="Animation" id=4]
 resource_name = "walk"
 
-[sub_resource type="CircleShape2D" id=5]
-radius = 13.073
+[sub_resource type="CapsuleShape2D" id=7]
+radius = 10.1318
+height = 5.45484
 
 [sub_resource type="RectangleShape2D" id=6]
-extents = Vector2( 7.60952, 1.10253 )
+extents = Vector2( 8.55446, 3.35988 )
 
 [node name="Player" type="KinematicBody2D"]
 z_index = 1
@@ -43,11 +44,12 @@ anims/idle = SubResource( 2 )
 anims/jump = SubResource( 3 )
 anims/walk = SubResource( 4 )
 
-[node name="CollisionBox" type="CollisionShape2D" parent="."]
-shape = SubResource( 5 )
+[node name="CollisionCircle" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource( 7 )
 
-[node name="CollisionBox2" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 11.7068 )
+[node name="CollisionBox" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 9.02943 )
 shape = SubResource( 6 )
 
 [node name="States" type="Node2D" parent="."]

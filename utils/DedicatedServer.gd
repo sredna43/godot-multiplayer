@@ -20,7 +20,7 @@ func _physics_process(delta):
 		client_clock += 1
 		decimal_collector -= 1.00
 
-func connect_to_server(server_port = 25565):
+func connect_to_server(server_port = 0):
 	port = server_port
 	var _create_client_error = network.create_client(ip, port)
 	get_tree().set_network_peer(network)

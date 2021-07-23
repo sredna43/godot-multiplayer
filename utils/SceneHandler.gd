@@ -1,6 +1,7 @@
 extends Node
 
 var main_menu = preload("res://scenes/guis/MainMenu.tscn")
+var lobby = preload("res://scenes/levels/Lobby.tscn")
 var level1 = preload("res://scenes/levels/TestLevel_1.tscn")
 var player_spawn = preload("res://scenes/entities/player/PlayerTemplate.tscn")
 var main_menu_instance
@@ -9,13 +10,15 @@ var last_world_state = 0
 var world_state_buffer: Array = []
 var interpolation_offset = 100
 var is_host: bool = false
+var passcode = "123456"
+var players_connected = 1
 onready var http_request = HTTPRequest.new()
 onready var lobby_server = Constants.lobby_server
 
 func _ready():
 	var _connect_error = DedicatedServer.connect("connected_to_server", self, "start")
 	main_menu_instance = main_menu.instance()
-	level_instance = level1.instance()
+	level_instance = lobby.instance()
 	add_child(main_menu_instance)
 	_connect_error = main_menu_instance.connect("host_pressed", self, "_host_game")
 	_connect_error = main_menu_instance.connect("connect_pressed", self, "_connect_to_game")
@@ -30,13 +33,14 @@ func _host_game():
 	var _http_error = http_request.request(lobby_server + "/host")
 	is_host = true
 	
-func _connect_to_game(passcode):
-	var _http_error = http_request.request(lobby_server + "/join/" + passcode)
+func _connect_to_game(code):
+	var _http_error = http_request.request(lobby_server + "/join/" + code)
 	is_host = false
+	passcode = code
 	
-func _handle_lobby_return(result, response_code, headers, body):
+func _handle_lobby_return(_result, response_code, _headers, body):
 	if OS.is_debug_build():
-		print("result: " + str(result), " response_code: " + str(response_code), " headers: " + str(headers), " body: " + str(JSON.parse(body.get_string_from_utf8()).result))
+		print("body: " + str(JSON.parse(body.get_string_from_utf8()).result))
 	if !body or response_code != 200:
 		push_error("Could not reach lobby server")
 		return
@@ -45,10 +49,11 @@ func _handle_lobby_return(result, response_code, headers, body):
 		print(json.error)
 		return
 	if is_host:
-		DedicatedServer.connect_to_server(json.port)
+		DedicatedServer.connect_to_server(int(json.port))
 		print("Passcode is " + json.passcode)
+		passcode = json.passcode
 	else:
-		DedicatedServer.connect_to_server(json.port)
+		DedicatedServer.connect_to_server(int(json.port))
 
 func spawn_player(pid: int, spawn_position: Vector2) -> void:
 	if get_tree().get_network_unique_id() == pid:
@@ -70,6 +75,7 @@ func update_world_state(world_state):
 		
 func _physics_process(_delta):
 	if DedicatedServer.connected:
+		players_connected = level_instance.get_node("YSort/OtherPlayers").get_child_count() + 1
 		var render_time = DedicatedServer.client_clock - interpolation_offset
 		if world_state_buffer.size() > 1:
 			while world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T:

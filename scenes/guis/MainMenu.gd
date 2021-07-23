@@ -27,7 +27,7 @@ func _join_pressed() -> void:
 	join_code_text.grab_focus()
 
 func _connect_pressed() -> void:
-	emit_signal("connect_pressed", join_code_text.text)
+	emit_signal("connect_pressed", join_code_text.text.to_upper())
 	
 func _process(_delta: float) -> void:
 	if state == states.MAIN:
