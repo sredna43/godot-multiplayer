@@ -11,6 +11,7 @@ onready var friction = Constants.PLAYER_FRICTION
 onready var l_floor_feeler = $Feelers/LFloorFeeler
 onready var jump_timer = $Timers/JumpTimer
 var jumping: bool = false setget , _get_jumping
+var paused = false
 
 var player_state: Dictionary = {}
 
@@ -36,6 +37,7 @@ func define_player_state() -> void:
 	DedicatedServer.send_player_state(player_state)
 	
 func _physics_process(delta) -> void:
-	_handle_inputs()
+	if not paused:
+		_handle_inputs()
 	._physics_process(delta)
 	define_player_state()

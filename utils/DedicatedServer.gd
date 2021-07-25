@@ -40,6 +40,24 @@ func _on_connection_succeeded():
 	
 func _on_connection_failed():
 	print("Failed to connect to server " + str(ip) + ":" + str(port))
+	network.close_connection(10)
+	
+func disconnect_from_server():
+	network.close_connection(10)
+	connected = false
+	
+func send_start_game():
+	print("sending start game")
+	rpc_id(1, "start_game")
+	
+remote func ready_up():
+	print("told to ready up")
+	get_node("../SceneHandler").ready_up()
+	rpc_id(1, "ready_to_race")
+	
+remote func start_race():
+	print("Go!")
+	get_node("../SceneHandler").start_race()
 
 func send_player_state(player_state):
 	if connected:
@@ -61,6 +79,12 @@ remote func return_server_time(server_time, client_time):
 	
 func determine_latency():
 	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
+	
+remote func winner(pid):
+	if get_tree().get_network_unique_id() == pid:
+		print("I won!")
+	else:
+		print("player " + str(pid) + " won!")
 
 remote func return_latency(client_time):
 	latency_array.append((OS.get_system_time_msecs() - client_time) / 2)
