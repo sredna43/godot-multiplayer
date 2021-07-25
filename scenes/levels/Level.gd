@@ -1,0 +1,21 @@
+extends Node2D
+
+signal leave
+
+onready var scene_handler = get_parent()
+onready var hud = $HUD
+onready var player: KinematicBody2D = $YSort/Player
+var start_pos
+
+func _ready() -> void:
+	player.set_global_position(scene_handler.player_level_start)
+	player.paused = true
+	if false:
+		emit_signal("leave")
+	var _error = hud.connect("timer_complete", self, "_go")
+
+func start_race():
+	hud.start_timer()
+
+func _go():
+	player.paused = false

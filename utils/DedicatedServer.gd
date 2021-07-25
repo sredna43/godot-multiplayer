@@ -1,8 +1,8 @@
 extends Node
 
 var network = NetworkedMultiplayerENet.new()
-var ip = ""
-var port = 0
+var ip = Constants.ip
+var port
 var connected = false
 var latency = 0.0
 var client_clock = 0
@@ -10,8 +10,7 @@ var latency_array = []
 var delta_latency = 0
 var decimal_collector: float = 0
 
-func _ready():
-	connect_to_server()
+signal connected_to_server
 	
 func _physics_process(delta):
 	client_clock += int(delta * 1000) + delta_latency
@@ -21,7 +20,8 @@ func _physics_process(delta):
 		client_clock += 1
 		decimal_collector -= 1.00
 
-func connect_to_server():
+func connect_to_server(server_port = 0):
+	port = server_port
 	var _create_client_error = network.create_client(ip, port)
 	get_tree().set_network_peer(network)
 	var _connection_succes_signal_status = network.connect("connection_succeeded", self, "_on_connection_succeeded")
@@ -31,6 +31,7 @@ func _on_connection_succeeded():
 	print("Connected to server " + str(ip) + ":" + str(port))
 	rpc_id(1, "fetch_server_time", OS.get_system_time_msecs())
 	connected = true
+	emit_signal("connected_to_server")
 	var timer = Timer.new()
 	timer.wait_time = 0.5
 	timer.autostart = true
@@ -39,6 +40,24 @@ func _on_connection_succeeded():
 	
 func _on_connection_failed():
 	print("Failed to connect to server " + str(ip) + ":" + str(port))
+	network.close_connection(10)
+	
+func disconnect_from_server():
+	network.close_connection(10)
+	connected = false
+	
+func send_start_game():
+	print("sending start game")
+	rpc_id(1, "start_game")
+	
+remote func ready_up():
+	print("told to ready up")
+	get_node("../SceneHandler").ready_up()
+	rpc_id(1, "ready_to_race")
+	
+remote func start_race():
+	print("Go!")
+	get_node("../SceneHandler").start_race()
 
 func send_player_state(player_state):
 	if connected:
@@ -60,6 +79,12 @@ remote func return_server_time(server_time, client_time):
 	
 func determine_latency():
 	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
+	
+remote func winner(pid):
+	if get_tree().get_network_unique_id() == pid:
+		print("I won!")
+	else:
+		print("player " + str(pid) + " won!")
 
 remote func return_latency(client_time):
 	latency_array.append((OS.get_system_time_msecs() - client_time) / 2)

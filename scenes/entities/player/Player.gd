@@ -6,11 +6,12 @@ onready var jump_power = Constants.PLAYER_JUMP_POWER
 onready var air_resistance = Constants.PLAYER_AIR_RESISTANCE
 onready var air_accel = Constants.PLAYER_AIR_ACCELERATION
 onready var jump_cancel = Constants.PLAYER_JUMP_CANCEL
+onready var friction = Constants.PLAYER_FRICTION
 
 onready var l_floor_feeler = $Feelers/LFloorFeeler
-onready var r_floor_feeler = $Feelers/RFloorFeeler
 onready var jump_timer = $Timers/JumpTimer
 var jumping: bool = false setget , _get_jumping
+var paused = false
 
 var player_state: Dictionary = {}
 
@@ -29,13 +30,14 @@ func _handle_inputs() -> void:
 		jump_timer.start()
 	
 func on_floor() -> bool:
-	return is_on_floor() or l_floor_feeler.is_colliding() or r_floor_feeler.is_colliding()
+	return is_on_floor() or l_floor_feeler.is_colliding()
 	
 func define_player_state() -> void:
 	player_state = {"T": OS.get_system_time_msecs(), "P": get_global_position()}
 	DedicatedServer.send_player_state(player_state)
 	
 func _physics_process(delta) -> void:
-	_handle_inputs()
+	if not paused:
+		_handle_inputs()
 	._physics_process(delta)
 	define_player_state()
