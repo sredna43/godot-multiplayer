@@ -13,9 +13,16 @@ func _ready() -> void:
 	if false:
 		emit_signal("leave")
 	var _error = hud.connect("timer_complete", self, "_go")
+	_error = hud.connect("leave_button_pressed", self, "_leave_game")
 
 func start_race():
 	hud.start_timer()
 
 func _go():
 	player.paused = false
+
+func _leave_game():
+	emit_signal("leave")
+
+func display_win(text):
+	hud.display_win(text)

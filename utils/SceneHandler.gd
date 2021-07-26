@@ -48,7 +48,8 @@ func go_to_main_menu():
 	_connect_error = current_level_instance.connect("connect_pressed", self, "_connect_to_game")
 	
 func _host_game():
-	var _http_error = http_request.request(lobby_server + "/host")
+	DedicatedServer.connect_to_server(56901)
+	#var _http_error = http_request.request(lobby_server + "/host")
 	is_host = true
 	
 func _connect_to_game(code):
@@ -92,7 +93,7 @@ func change_level(next_level):
 		current_level_instance.queue_free()
 	current_level_instance = next_level.instance()
 	add_child(current_level_instance)
-	if levels.has(current_level_instance):
+	if current_level_instance.get_class() == "Node2D":
 		current_level_instance.connect("leave", self, "_leave_server")
 		
 
@@ -107,8 +108,13 @@ func ready_up():
 	change_level(levels.level1)
 	
 func _leave_server():
+	print("leaving server lobby")
 	DedicatedServer.disconnect_from_server()
 	go_to_main_menu()
+	
+func display_win(text):
+	if current_level_instance.get_class() == "Node2D":
+		current_level_instance.display_win(text)
 
 func update_world_state(world_state):
 	if world_state["T"] > last_world_state:

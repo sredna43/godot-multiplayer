@@ -15,6 +15,7 @@ func _ready() -> void:
 	main.get_node("VBoxContainer/JoinButton").connect("pressed", self, "_join_pressed")
 	main.get_node("VBoxContainer/HostButton").connect("pressed", self, "_host_pressed")
 	join.get_node("VBoxContainer/ConnectButton").connect("pressed", self, "_connect_pressed")
+	join.get_node("VBoxContainer/BackButton").connect("pressed", self, "_back_pressed")
 
 
 func _host_pressed() -> void:
@@ -28,6 +29,10 @@ func _join_pressed() -> void:
 
 func _connect_pressed() -> void:
 	emit_signal("connect_pressed", join_code_text.text.to_upper())
+	
+func _back_pressed() -> void:
+	if state == states.JOIN:
+		state = states.MAIN
 	
 func _process(_delta: float) -> void:
 	if state == states.MAIN:
