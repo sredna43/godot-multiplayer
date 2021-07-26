@@ -11,6 +11,10 @@ var delta_latency = 0
 var decimal_collector: float = 0
 
 signal connected_to_server
+
+func _ready() -> void:
+	var _error = network.connect("connection_succeeded", self, "_on_connection_succeeded")
+	_error = network.connect("connection_failed", self, "_on_connection_failed")
 	
 func _physics_process(delta):
 	client_clock += int(delta * 1000) + delta_latency
@@ -24,8 +28,6 @@ func connect_to_server(server_port = 0):
 	port = server_port
 	var _create_client_error = network.create_client(ip, port)
 	get_tree().set_network_peer(network)
-	var _connection_succes_signal_status = network.connect("connection_succeeded", self, "_on_connection_succeeded")
-	var _connection_fail_signal_status = network.connect("connection_failed", self, "_on_connection_failed")
 	
 func _on_connection_succeeded():
 	print("Connected to server " + str(ip) + ":" + str(port))
@@ -43,8 +45,10 @@ func _on_connection_failed():
 	network.close_connection(10)
 	
 func disconnect_from_server():
+	print("disconnecting from server")
 	network.close_connection(10)
 	connected = false
+	get_tree().set_network_peer(null)
 	
 func send_start_game():
 	print("sending start game")
@@ -78,7 +82,8 @@ remote func return_server_time(server_time, client_time):
 	client_clock = server_time + latency
 	
 func determine_latency():
-	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
+	if connected:
+		rpc_id(1, "determine_latency", OS.get_system_time_msecs())
 	
 remote func winner(pid):
 	if get_tree().get_network_unique_id() == pid:

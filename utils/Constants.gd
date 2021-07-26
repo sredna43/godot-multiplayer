@@ -1,7 +1,7 @@
 extends Node
 
-var ip = ""
-var lobby_server = "http://:56900"
+var ip = "127.0.0.1"
+var lobby_server = "http://127.0.0.1:56900"
 
 var GRAVITY: int = 10
 var TERMINAL_VELOCITY: int = 1000
