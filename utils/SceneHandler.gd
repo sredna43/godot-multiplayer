@@ -111,6 +111,10 @@ func _leave_server():
 	print("leaving server lobby")
 	DedicatedServer.disconnect_from_server()
 	go_to_main_menu()
+	
+func display_win(text):
+	if current_level_instance.get_class() == "Node2D":
+		current_level_instance.display_win(text)
 
 func update_world_state(world_state):
 	if world_state["T"] > last_world_state:

@@ -87,9 +87,9 @@ func determine_latency():
 	
 remote func winner(pid):
 	if get_tree().get_network_unique_id() == pid:
-		print("I won!")
+		get_node("../SceneHandler").display_win("You won!!")
 	else:
-		print("player " + str(pid) + " won!")
+		get_node("../SceneHandler").display_win("player " + str(pid) + " won!")
 
 remote func return_latency(client_time):
 	latency_array.append((OS.get_system_time_msecs() - client_time) / 2)
