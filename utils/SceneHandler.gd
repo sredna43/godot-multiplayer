@@ -48,8 +48,7 @@ func go_to_main_menu():
 	_connect_error = current_level_instance.connect("connect_pressed", self, "_connect_to_game")
 	
 func _host_game():
-	DedicatedServer.connect_to_server(56901)
-	#var _http_error = http_request.request(lobby_server + "/host")
+	var _http_error = http_request.request(lobby_server + "/host")
 	is_host = true
 	
 func _connect_to_game(code):
